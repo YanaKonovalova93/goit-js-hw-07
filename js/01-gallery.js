@@ -5,8 +5,6 @@ console.log(galleryItems);
 
 const ulGalleryEl = document.querySelector(".gallery");
 
-const body = document.querySelector("body");
-
 const markup = galleryItems
   .map(
     ({ preview, original, description }) => `<li class="gallery__item">
@@ -26,52 +24,24 @@ ulGalleryEl.insertAdjacentHTML("afterbegin", markup);
 
 ulGalleryEl.addEventListener("click", onOpenModal);
 
-function onOpenModal(e) {
+function onOpenModal(evt) {
+  evt.preventDefault();
 
-  e.preventDefault();
+  const selectedUrl = evt.target.dataset.source;
 
-    const selectedUrl = e.target.dataset.source;
+  if (evt.target.nodeName !== "IMG") {
+    return;
+  }
 
-    body.innerHTML = `<template>
-  <div class="modal">
-   <li class="gallery__item">
-     <a class="gallery__link" href="${selectedUrl}">
-      <img
-        class="gallery__image"
-        src="${selectedUrl}"
-         data-source="${selectedUrl}"
-        alt="q"
-        width="800" height="600"
-       />
-    </a>
-   </li>
-  </div>
-</template>`;
-    
-    const instance = basicLightbox.create(document.querySelector("template"));
+  const instance = basicLightbox.create(`
+    <img src="${selectedUrl}" width="800" height="600">
+`);
 
-    instance.show();
+  instance.show();
 
+  ulGalleryEl.addEventListener("keydown", (evt) => {
+    if (evt.code === "Escape") {
+      instance.close();
+    }
+  });
 }
-
-
-//   const instance = basicLightbox.create(
-//     ` <img
-//         class="gallery__image"
-//         src="${selectedUrl}"
-//          data-source="${selectedUrl}"
-//         alt="w"
-//         width="800" height="600"
-//        />`, {
-//            closable:false
-//        }
-//   );
-    
-//    const instance = basicLightbox
-//      .create(
-//        ` <img
-//         src="${selectedUrl}"
-//         width="800" height="600"
-//        />`
-//      )
-//      .show();
