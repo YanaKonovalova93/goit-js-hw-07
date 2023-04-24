@@ -16,17 +16,7 @@ const markup = galleryItems
 
 ulGalleryEl.insertAdjacentHTML("afterbegin", markup);
 
-ulGalleryEl.addEventListener("click", onOpenModal);
-
-function onOpenModal(evt) {
-  evt.preventDefault();
-
-  if (evt.target.nodeName !== "IMG") {
-    return;
-  }
-
   let lightbox = new SimpleLightbox(".gallery a", {
     captionsData: "alt",
     captionDelay: 250,
   });
-}
